@@ -18,7 +18,8 @@ RUN go build -o auth-service main.go
 
 FROM alpine:latest
 
-RUN  apk add --no-cache ca-certificates
+RUN apk add --no-cache ca-certificates && \
+    apk add --no-cache wget
 
 WORKDIR /root/
 
