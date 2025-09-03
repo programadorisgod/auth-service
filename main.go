@@ -19,12 +19,12 @@ func main() {
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello world!")
 	})
-	app.Get("/healt", func(c *fiber.Ctx) error {
+	app.Get("/health", func(c *fiber.Ctx) error {
 		return c.SendString("I'm healthy")
 	})
 
 	app.Post("/login", auth.Login)
-	app.Post("register", auth.CreateUser)
+	app.Post("/register", auth.CreateUser)
 
 	log.Fatal(app.Listen(":4000"))
 
