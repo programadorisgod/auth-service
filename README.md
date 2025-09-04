@@ -41,50 +41,7 @@ docker network create swyw
 
 ## Configuración y Despliegue
 
-### Paso 1: Levantar Base de Datos PostgreSQL
-
-Antes de ejecutar el servicio de autenticación, es **obligatorio** levantar la base de datos PostgreSQL:
-
-```bash
-docker run -d --name s-postgres --network swyw \
-  -e POSTGRES_PASSWORD=1234 \
-  -p 5432:5432 postgres:13.22-trixie
-```
-
-**Parámetros importantes:**
-- `--name s-postgres`: Nombre del contenedor (requerido para conectividad)
-- `--network swyw`: Conecta a la red personalizada del proyecto
-- `-e POSTGRES_PASSWORD=1234`: Contraseña de la BD (recuerda este valor)
-- `-p 5432:5432`: Puerto expuesto para conexiones externas
-
-### Paso 2: Configurar Estructura de Base de Datos
-
-Una vez que PostgreSQL esté corriendo, debemos crear la tabla de usuarios:
-
-```bash
-# Acceder al contenedor de PostgreSQL
-docker exec -it s-postgres bash
-
-# Conectar a PostgreSQL como usuario postgres
-psql -U postgres
-
-# Crear la tabla de usuarios
-CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(150) UNIQUE NOT NULL,
-    create_at TIMESTAMP DEFAULT NOW(),
-    pass TEXT NOT NULL
-);
-
-# Salir de PostgreSQL
-\q
-
-# Salir del contenedor
-exit
-```
-
-### Paso 3: Construir Imagen del Servicio Auth
+### Paso 1: Construir Imagen del Servicio Auth
 
 ```bash
 # Navegar al directorio del servicio si te saliste en el paso anterior.
@@ -94,7 +51,7 @@ cd SWYW-AUTH
 docker build -t auth-service .
 ```
 
-### Paso 4: Ejecutar el Servicio de Autenticación
+### Paso 2: Ejecutar el Servicio de Autenticación
 
 Tienes **dos opciones** para pasar las variables de entorno:
 

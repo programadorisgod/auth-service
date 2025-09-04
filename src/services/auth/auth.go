@@ -30,10 +30,10 @@ func FindUser(email string) (*user.User, error) {
 		email,
 	).Scan(&u.Id, &u.Name, &u.Email, &u.Pass, &u.Create_at)
 
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, err
-		}
 		return nil, err
 	}
 
