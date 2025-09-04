@@ -24,6 +24,18 @@ func CreateUser(c *fiber.Ctx) error {
 		})
 	}
 
+	u, error := authServices.FindUser(req.Email)
+
+	if error != nil {
+		return error
+	}
+
+	if u != nil {
+		return c.Status(http.StatusConflict).JSON(fiber.Map{
+			"error": "User already exists",
+		})
+	}
+
 	id, err := authServices.SaveUser(&req)
 
 	if err != nil {
