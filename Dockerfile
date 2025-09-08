@@ -1,7 +1,7 @@
 #STAGE 1
 FROM golang:1.24.6-alpine AS builder
 
-RUN  apk add --no-cache git
+RUN apk update && apk add --no-cache git
 
 WORKDIR /app
 
@@ -16,9 +16,9 @@ RUN go build -o auth-service main.go
 
 #STAGE 2
 
-FROM alpine:latest
+FROM alpine:3.19
 
-RUN apk add --no-cache ca-certificates && \
+RUN apk update && apk add --no-cache ca-certificates && \
     apk add --no-cache wget
 
 WORKDIR /root/
