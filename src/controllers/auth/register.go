@@ -1,15 +1,20 @@
 package auth
 
 import (
+	"bytes"
+	"encoding/json"
+	"io"
 	"net/http"
+	"net/url"
 
 	"github.com/gofiber/fiber/v2"
 
+	"github.com/programadorisgod/auth-service/src/config"
 	"github.com/programadorisgod/auth-service/src/models/user"
-	authServices "github.com/programadorisgod/auth-service/src/services/auth"
 )
 
-func CreateUser(c *fiber.Ctx) error {
+func Register(c *fiber.Ctx) error {
+
 	var req user.UserRegister
 
 	if err := c.BodyParser(&req); err != nil {
@@ -18,32 +23,37 @@ func CreateUser(c *fiber.Ctx) error {
 		})
 	}
 
-	if req.Email == "" || req.Pass == "" || req.Name == "" {
-		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
-			"error": "Email and password are required",
+	postBody, err := json.Marshal(req)
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Internal server error, try later",
 		})
 	}
 
-	u, error := authServices.FindUser(req.Email)
-
-	if error != nil {
-		return error
-	}
-
-	if u != nil {
-		return c.Status(http.StatusConflict).JSON(fiber.Map{
-			"error": "User already exists",
+	urlUsers, err := url.JoinPath(config.Url_users, "register")
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to build user service URL",
 		})
 	}
 
-	id, err := authServices.SaveUser(&req)
+	res, err := http.Post(urlUsers, "application/json", bytes.NewBuffer(postBody))
 
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Could not create user",
+			"error": err.Error(),
 		})
 	}
-	return c.Status(http.StatusCreated).JSON(fiber.Map{
-		"id": id,
-	})
+
+	defer res.Body.Close()
+
+	body, err := io.ReadAll(res.Body)
+
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Error reading response from user service",
+		})
+	}
+	//TODO: generate token and send token
+	return c.Status(res.StatusCode).Send(body)
 }

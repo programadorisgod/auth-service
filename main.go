@@ -25,14 +25,15 @@ func main() {
 	}))
 
 	app.Get("/health", func(c *fiber.Ctx) error {
-		return c.SendString("I'm healthy")
+		return c.SendString("I'm healthy!")
 	})
+
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello world!")
 	})
 
-	app.Post("/login", auth.Login)
-	app.Post("/register", auth.CreateUser)
+	app.Post("/api/register", auth.Register)
+	app.Post("/api/login", auth.Login)
 
 	log.Fatal(app.Listen(":4000"))
 
