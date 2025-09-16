@@ -17,9 +17,9 @@ func InitDB() {
 	_ = godotenv.Load()
 
 	dbUser := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
-	host := os.Getenv("DB_HOST")
-	dbname := os.Getenv("DB_NAME")
+	password := os.Getenv("DB_APP_USER_PASSWORD")
+	host := os.Getenv("DB_HOST_AUTH")
+	dbname := os.Getenv("DB_NAME_AUTH")
 	port := os.Getenv("DB_PORT")
 
 	if dbUser == "" || password == "" || host == "" || dbname == "" || port == "" {
