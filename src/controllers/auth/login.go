@@ -61,7 +61,7 @@ func Login(c *fiber.Ctx) error {
 
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Error reading response from user service",
+			"error": "Error reading  AI user service",
 		})
 	}
 
