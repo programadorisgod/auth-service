@@ -203,4 +203,4 @@ docker build -t auth-service . --no-cache
 
 ---
 
-**SWYW-AUTH** - Microservicio de autenticación desarrollado con Go para máxima concurrencia y disponibilidad...
+**SWYW-AUTH** - Microservicio de autenticación desarrollado con Go para máxima concurrencia y disponibilidad.

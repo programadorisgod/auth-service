@@ -8,7 +8,8 @@ type UserRegister struct {
 
 type UserLogin struct {
 	Email string `json:"email" xml:"email" form:"email"`
-	Pass  string `json:"pass" xml:"passs" form:"pass"`
+
+	Pass string `json:"pass" xml:"pass" form:"pass"`
 }
 
 type User struct {
