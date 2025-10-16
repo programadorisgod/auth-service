@@ -15,26 +15,27 @@ RUN go mod download
 COPY . .
 
 # BUILD MAIN BINARY
-#RUN go build -o auth-service main.go
+RUN go build -o auth-service main.go
 
-EXPOSE 4000
+# RUN apk update && apk add --no-cache ca-certificates && \
+#     apk add --no-cache wget
 
-RUN apk update && apk add --no-cache ca-certificates && \
-    apk add --no-cache wget
-
-CMD ["air", "-c", ".air.toml"]
 
 #STAGE 2
 
-#FROM alpine:3.19
+FROM alpine:3.19
 
-#RUN apk update && apk add --no-cache ca-certificates && \
-#apk add --no-cache wget
+RUN apk update && apk add --no-cache ca-certificates && \
+    apk add --no-cache wget \
+    && addgroup -g 1000 usergo && adduser -u 1000 -G usergo -s /bin/sh -D usergo
 
-#WORKDIR /root/
+WORKDIR /app/
 
-#COPY --from=builder /app/auth-service .
+USER usergo
 
-#EXPOSE 4000
+COPY --from=builder /app/auth-service .
 
-#CMD [ "./auth-service" ]
+EXPOSE 4000
+
+
+CMD [ "./auth-service" ]

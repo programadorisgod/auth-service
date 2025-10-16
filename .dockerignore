@@ -1,0 +1,7 @@
+Dockerfile
+development.dockerfile
+auth-service
+.air.toml
+temp
+.env
+.gitignore
