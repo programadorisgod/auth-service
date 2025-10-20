@@ -35,6 +35,6 @@ func main() {
 	app.Post("/api/register", auth.Register)
 	app.Post("/api/login", auth.Login)
 
-	log.Fatal(app.Listen(":4000"))
+	log.Fatal(app.Listen("0.0.0.0:4000"))
 
 }
