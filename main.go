@@ -32,8 +32,8 @@ func main() {
 		return c.SendString("Hello world!")
 	})
 
-	app.Post("/api/register", auth.Register)
-	app.Post("/api/login", auth.Login)
+	app.Post("/api/auth/register", auth.Register)
+	app.Post("/api/auth/login", auth.Login)
 
 	log.Fatal(app.Listen("0.0.0.0:4000"))
 
