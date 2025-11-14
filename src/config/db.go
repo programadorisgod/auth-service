@@ -4,9 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
 
-	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
@@ -15,14 +13,12 @@ var Url_users string
 
 func InitDB() {
 
-	_ = godotenv.Load()
-
-	url := os.Getenv("URL_SERVICE_USERS")
-	dbUser := os.Getenv("DB_USER")
-	password := os.Getenv("DB_APP_USER_PASSWORD")
-	host := os.Getenv("DB_HOST_AUTH")
-	dbname := os.Getenv("DB_NAME_AUTH")
-	port := os.Getenv("DB_PORT")
+	url := Env.URLServiceUsers
+	dbUser := Env.DBUser
+	password := Env.DBAppUserPassword
+	host := Env.DBHostAuth
+	dbname := Env.DBNameAuth
+	port := Env.DBPort
 
 	if dbUser == "" || password == "" || host == "" || dbname == "" || port == "" || url == "" {
 		log.Fatal("❌ Some variables not found")
